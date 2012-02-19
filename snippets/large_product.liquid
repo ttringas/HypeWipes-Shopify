@@ -1,0 +1,17 @@
+<div class="large_product {% if large_product == 3%}{% cycle '', '', 'last_in_row' %}{%elsif large_product ==2%}{% cycle '', 'last_in_row'%}{%endif%}">
+    <a href="{{ product.url | within: collection }}" title="{{ product.title | escape }}">
+		{% if product.tags contains "sale" or product.price < product.compare_at_price_max %}<p class="large_product_sale"></p>{%endif%}
+		<div class="large_product_image{%if settings.product_display_type == 'fixed' %} center_img{%endif%}">
+			{%if settings.product_display_type == 'fixed' %}
+				<img src="{{ product.images[0] | product_img_url: "large" }}" alt="{{ product.title | escape }}" />
+			{%else%}
+				<img src="{{ product.images[0] | product_img_url: "large" }}"  alt="{{ product.title | escape }}" />
+			{%endif%}
+		</div>
+		<div class="large_product_content clearfix">
+			<p class="large_product_price">{% if product.price_varies %}FROM {%endif%}{{ product.price | money }}</p>
+			<h4>{{ product.title }}</h4>
+			{% if settings.product_brand == 'enabled' %}{% if product.vendor %}<p>{{ product.vendor }}</p>{% endif %}{% endif %}
+		</div>
+	</a>
+</div>

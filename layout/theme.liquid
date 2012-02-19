@@ -1,0 +1,287 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie {{settings.base_color}}" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie {{settings.base_color}}" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie {{settings.base_color}}" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js {{settings.base_color}}" lang="en"> <!--<![endif]-->
+<head>
+    <title>{{ shop.name | escape }} &mdash; {% if template == "404" %}Page Not Found{% else %}{{ page_title | escape }}{% endif %}</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="copyright" content="{{ shop.name | escape }}" />
+	{% if template == 'index' and shop.description != '' %}<meta name="description" content="{{ shop.description }}" />{% endif %}
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{{ content_for_header }}
+	{{ "style.css" | asset_url | stylesheet_tag }}
+	{{ "modernizr-2.0.6.min.js"  | asset_url | script_tag }}
+	<!--[if lt IE 8]>{{ 'oldie.css' | asset_url | stylesheet_tag }}<![endif]-->
+	{{ "uniform-home.css" | asset_url | stylesheet_tag }}
+	{{ "uniform-small.css" | asset_url | stylesheet_tag }}
+	{% if template contains "product" %}{% if product.available %}{% if product.variants.size > 1 %}
+	{{ "option_selection.js" | shopify_asset_url | script_tag }}{% endif %}{% endif %}{% endif %}
+	
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ 'jquery-1.6.2.min.js' asset_url }}"><\/script>')</script>
+
+    {{ "plugins.js"  | asset_url | script_tag }}
+	{{ "gallery.min.js" | asset_url | script_tag }}
+	{{ "jquery.uniform.min.js"  | asset_url | script_tag }}
+	
+    {{ "raphael-min.js"  | asset_url | script_tag }}
+    {{ "jquery.maketextfit.js"  | asset_url | script_tag }}
+    {{ "jquery.masonry.min.js"  | asset_url | script_tag }}
+	
+    {% if template contains 'customers' %}
+    	{{ "shopify_common.js" | shopify_asset_url | script_tag }}
+    	{{ "customer_area.js"  | shopify_asset_url | script_tag }}
+		{{ 'customer.css' | asset_url | stylesheet_tag }}
+  	{% endif %}
+	{% if template contains "product" %}
+    	{{ "jquery.mousewheel-3.0.4.pack.js"  | asset_url | script_tag }}
+    	{{ "jquery.fancybox-1.3.4.pack.js"  | asset_url | script_tag }}
+    	{{ "jquery.easing-1.3.pack.js"  | asset_url | script_tag }}
+		{{ "jquery.fancybox-1.3.4.css" | asset_url | stylesheet_tag }}
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(".fancy").fancybox();
+			});
+		</script>
+	{% endif %}
+<script>
+	var accent_color = "{{settings.text_accent_color}}";
+</script>
+    
+</head>
+
+<body{%if template == "index" %} id="home"{%endif%} class="{%if template contains "collection" or template contains "product"%}catalog{%endif%}">
+	
+	
+<!-- CONTAINER -->
+<div id="container">
+	
+	<!-- HEADER -->
+	<div id="header">
+		<div class="header_cart">
+			<a href="/cart" class="b_rect">Cart</a>
+			<p>
+				<span>{{ cart.item_count }} {{ cart.item_count | pluralize: "item", "items" }}</span>
+				{{ cart.total_price | money }}
+			</p>
+			{% if shop.customer_accounts_enabled %}
+			<p class="header_account">
+			  {% if customer  %}
+			    <a href="/account">Account</a> {{ "Logout" | customer_logout_link }}
+			  {% else %}
+			    {{ "Login" | customer_login_link }}
+			  {% endif %}
+			</p>
+			{% endif %}
+		</div>
+		<!-- START LOGO -->{% if settings.logo == "enabled" %}
+		<div id="logo">
+			<a href="/"><img src="{{ "logo.gif" | asset_url }}" alt="{{ shop.name | escape }}" /></a>
+		</div>{% else %}
+		<h1><a href="/">{{ shop.name | escape }}</a></h1>{% endif %}
+		<!-- END LOGO -->
+	</div>
+	<!-- / HEADER -->
+		
+	<!-- NAV -->
+	<div id="nav" class="clearfix">
+		<!-- START GO -->
+			<form method="get" action="/search">
+				<input type="image" src="{{ 'img-' | append: settings.base_color | append: '-search_icon.png' | asset_url }}" alt="Go" id="go" />
+				<input type="text" name="q" value="{% if search.performed %}{{ search.terms | escape | downcase }}{% endif %}" placeholder="Search Store" class="field" id="q" /> 
+			</form>
+		<!-- END GO -->
+			<ul>{% for link in linklists.main-menu.links %}
+				<li><a href="{{ link.url }}" class="{% if link.url == "/collections/all" %}nav_catalog{%endif%}{% if link.active %} active{% endif %}">{{ link.title | escape }}</a>
+
+					{% capture child_list_handle %}{{ link.title | handleize }}{% endcapture %}
+					{% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+					<ul>
+						<li class="catlist_arrow"></li>
+					{% for l in linklists[child_list_handle].links %}
+						<li><a href="{{ l.url }}">{{ l.title }}</a></li>
+					{% endfor %}
+					</ul>
+					{% endif %}
+					</li>{% endfor %}
+		</ul>
+	</div>
+	<!-- / NAV -->
+	{% if template == "index" and settings.slideshow == 'enabled' %}
+	<!-- MARQUEE -->
+	<div id="marquee">
+		{% assign imgs = "" %}
+		{% assign contents = "" %}
+		{% assign first = "true" %}
+		{% for i in (1..5) %}
+			{%capture slide_display%}slide_{{i}}_display{%endcapture%}
+			{%capture slide_content%}slide_{{i}}_content{%endcapture%}
+			{%capture slide_title%}slide_{{i}}_title{%endcapture%}
+			{%capture slide_price%}slide_{{i}}_price{%endcapture%}
+			{%capture slide_desc%}slide_{{i}}_desc{%endcapture%}
+			{%capture slide_link%}slide_{{i}}_link{%endcapture%}
+			{% if settings[slide_display] == "enabled" %}
+				{% if settings[slide_link].size > 0 and settings[slide_content] == "disabled" %}
+					<a href="{{ settings[slide_link] }}" class="slide"{% if first != "true" %}style="display:none;"{%endif%}>
+				{% else %}
+					<div class="slide"{% if first != "true" %}style="display:none;"{%endif%}>					
+				{% endif %}
+				<img src="{{ 'slide_' | append: i | append:'.jpg' | asset_url }}" alt="{{ settings[slide_desc] | strip_html }}" />
+				{% if settings[slide_content] == "enabled" %}
+				<div class="slide_content" {% if i > 1 %}style="display:none;"{%endif%}>
+					<h2>{{ settings[slide_title] }}</h2>
+					<a href="{{ settings[slide_link] }}" class="slide_tag">
+						<p>Shipping Only</p>
+						<p class="slide_price">{{ settings[slide_price] }}</p>
+					</a>
+					<div class="svg_tag" id="tag_{{i}}"></div>
+					<p class="slide_desc">{{ settings[slide_desc] | truncatewords: 45 }}</p>
+				</div><!-- .slide-details-top -->
+				{%endif%}
+				{% if settings[slide_link].size > 0 and settings[slide_content] == "disabled" %}
+					</a>
+				{% else %}
+					</div>
+				{% endif %}
+				{% assign first = "false" %}
+			{% endif %}
+		{%endfor%}
+		
+		
+	</div>
+	<!-- / MARQUEE -->
+	{% endif %}
+	<!-- MAIN -->
+	<div id="main" role="main" class="clearfix">
+
+		{% if template == 'list-collections' %}
+			{% include 'collection-listing' %}
+		{% else %}
+			{{ content_for_layout }}
+		{% endif %}
+		
+		{{ 'http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js' | script_tag }}
+		{{ 'jquery.products.min.js' | asset_url | script_tag }}
+
+		<script type="text/javascript" charset="utf-8">
+		//<![CDATA[
+
+		Shopify.Products.showRecentlyViewed( { howManyToShow:4 } );
+
+		//]]>
+		</script>
+
+	</div>
+	<!-- / MAIN -->
+	
+	
+	<!-- FOOTER -->
+	<div id="footer" class="clearfix">
+		
+		<div id="footer_left">
+			{% if settings.about_footer_title.size > 0 %}<h3>{{ settings.about_footer_title }}</h3>{%endif%}
+			{% if settings.about_footer.size > 0 %}<p>{{ settings.about_footer }}</p>{%endif%}
+			
+			<p>
+				{% if shop.phone.size > 0 %}Phone: {{ shop.phone }}<br />{%endif%}
+				Email: <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+			</p>
+		</div>
+		
+		<div id="footer_mid">
+			{% if settings.payment_footer_title.size > 0 %}<h3>{{ settings.payment_footer_title }}</h3>{%endif%}
+			{% if settings.enable_creditcards %}
+				<ul>
+    				{% if settings.show_paypal %}<li class="paypal">PayPal</li>{% endif %}
+    				{% if settings.show_visa %}<li class="visa">Visa</li>{% endif %}
+					{% if settings.show_mastercard %}<li class="mastercard">Mastercard</li>{% endif %}
+					{% if settings.show_amex %}<li class="amex">American Express</li>{% endif %}
+					{% if settings.show_discover %}<li class="discover">Discover</li>{% endif %}
+				</ul>
+ 			{% endif %}
+			{% if settings.we_ship_to.size > 0 %}<p>{{ settings.we_ship_to }}</p>{%endif%}
+		</div>
+		
+		<div id="footer_right">
+			
+			{% if settings.enable_mailing_list %}
+			
+			{% if settings.mailing_footer_title.size > 0 %}<h3>{{ settings.mailing_footer_title }}</h3>{%endif%}
+			{% if settings.mailing_list_text.size > 0 %}<p>{{ settings.mailing_list_text }}</p>{%endif%}		
+			
+			<form action="{{ settings.mailing_list_form_action }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+				<p>
+					<input type="email" value="" name="EMAIL" class="required email" id="mail" placeholder="your@email.com" /><input type="submit" value="SUBSCRIBE" name="subscribe" id="subscribe" />
+				</p>
+			</form>
+			{% endif %}
+		</div>
+		
+	</div>
+	<!-- / FOOTER -->
+	
+	<!-- COPYRIGHT -->
+	<div class="copyright">
+		<p class="copyright_links">
+			{% if settings.footer_blog_icon != "" %}<a href="{{ blogs[settings.footer_blog_icon].url }}.atom" class="social_rss">RSS</a>{%endif%}
+			{% if settings.facebook_url.size > 0 %}<a href="{{ settings.facebook_url }}" class="social_facebook">Facebook</a>{% endif %}
+			{% if settings.twitter_footer == 'enabled' %}<a href="http://twitter.com/{{ settings.twitter_handle }}" class="social_twitter">Twitter</a>{% endif %}
+		</p>
+		<p>&copy; {{ "now" | date: "%Y" }} {{ shop.name | escape }}. {{ powered_by_link }}. {% if settings.show_pu_link %}A theme by <a href="http://pixelunion.net/" target="_blank">Pixel Union</a>.{% endif %}</p>{% if linklists[settings.footer_links].links.size > 0 %}
+				<p class="links">{% for link in linklists[settings.footer_links].links %}<a href="{{ link.url }}">{{ link.title | escape }}</a>{% unless forloop.last %} <span>&#124;</span> {% endunless %}{% endfor %}</p>{% endif %}
+	</div>
+	<!-- / COPYRIGHT -->
+
+
+
+
+</div>
+<!-- / CONTAINER -->
+	
+	{% if template contains "product" %}{% if product.available %}{% if product.variants.size > 1 %}
+	<script type="text/javascript">
+		// <![CDATA[
+		var selectCallback = function(variant, selector) {
+			if (variant && variant.available == true) {
+				$("input#add").removeClass("disabled").removeAttr("disabled");
+				$(".price_field").html(Shopify.formatMoney(variant.price, "{{ shop.money_format }}"));
+				if ($(".del_field").length > 0) {
+					if(variant.compare_at_price > 0) {
+						$(".del_field").html(Shopify.formatMoney(variant.compare_at_price, "{{ shop.money_format }}"));
+					} else {
+						$(".del_field").html("");
+					}
+				};
+			} else {
+				$("input#add").addClass("disabled").attr("disabled", "disabled");
+				var message = variant ? "Sold Out" : "Unavailable";
+				$(".price_field").text(message);
+				if ($(".del_field").length > 0) { $(".del_field").text(""); };
+			}
+		};
+		$(function() {
+			new Shopify.OptionSelectors("id", { product: {{ product | json }}, onVariantSelected: selectCallback });
+			// Following trick by Caroline Schnapp. See http://forums.shopify.com/categories/2/posts/38738
+			{% if product.available %}
+			{% assign found_one_in_stock = false %}
+			{% for variant in product.variants %}
+			  {% if variant.available and found_one_in_stock == false %}
+			    {% assign found_one_in_stock = true %}
+			    {% for option in product.options %}
+			      $('#id-option-' + {{ forloop.index0 }}).val('{{ variant.options[forloop.index0] }}').trigger('change');
+			    {% endfor %}
+			  {% endif %}
+			{% endfor %}
+			{% endif %}
+			
+			$(".single-option-selector").uniform({selectClass: 'selector'});
+		});
+		// ]]>
+	</script>{% endif %}{% endif %}{% endif %}
+
+    {{ "script.js"  | asset_url | script_tag }}
+</body>
+</html>

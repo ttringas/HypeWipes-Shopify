@@ -1,0 +1,70 @@
+		<!-- PRIMARY -->
+		<div id="primary_column">
+			<!-- START CONTENT -->
+			<div class="hgroup">
+				<h2>Cart</h2>{% if cart.item_count > 0 %}
+			</div>
+			
+			<form action="/cart" method="post" name="cartform">
+				<!-- START TABLE -->
+				<table cellpadding="0" cellspacing="0" class="cart_table">
+					<!-- START HEADERS -->
+					<!-- END HEADERS -->{% for item in cart.items %}
+					<!-- START PRODUCT {{ forloop.index }} -->
+					<tr>
+						<td class="pic">
+							<a href="{{ item.product.url | within: collections.all }}"><img src="{{ item.product.images[0] | product_img_url: "compact" }}" alt="{{ item.title | escape }}" /></a>
+						</td>
+						<td class="title">
+							<p><a href="{{ item.product.url | within: collections.all }}">{{ item.title | escape }}</a></p>
+							<p>{{ item.vendor }}</p>
+						</td>
+						<td class="quantity"><input type="text" class="field input" name="updates[]" id="updates_{{ item.variant.id }}" value="{{ item.quantity }}" /></td>
+						<td class="total_price">{{ item.price | money }}</td>
+						<td class="remove"><a href="/cart/change/{{ item.variant.id }}?quantity=0">Remove</a></td>
+					</tr>
+					<!-- END PRODUCT {{ forloop.index }} -->{% endfor %}
+					<tr class="total_row">
+						<td class="title notes" colspan="2">{% if settings.notes == "enabled" %}
+							<!-- START NOTES -->
+								<label for="note">{% if settings.notes_text.size > 0 %}{{ settings.notes_text | escape }}{% else %}<a href="/admin/themes/current">Change this text in your theme editor...</a>{% endif %}</label>
+								<textarea name="note" id="note" class="input" rows="" cols="">{{ cart.note }}</textarea>
+							<!-- END NOTES -->{% endif %}
+						</td>
+						<td class="quantity"><input type="submit" value="Update" name="update" id="b_update" /></td>
+						<td class="total_price">{{ cart.total_price | money }}</td>
+						<td class="remove">
+							<input type="submit" value="Checkout" class="b_rect" name="checkout" />
+							
+							{% if additional_checkout_buttons %}
+					      		<div class="additional-checkout-buttons">
+					        		{{ content_for_additional_checkout_buttons }}
+					      		</div>
+					    	{% endif %}
+					
+					<!-- START CHECKOUT -->
+							{% if shop.customer_accounts_enabled %}
+								{% if customer %}
+							    	<p class="cart_account">Welcome {{ customer.first_name }}<br/>{{ 'Logout' | customer_logout_link }}</p>
+								{% else %}
+							    	<p class="cart_account">{{ 'Customer Login' | customer_login_link }}</p>
+								{% endif %}
+							{% endif %}
+					<!-- END CHECKOUT -->
+						</td>
+					</tr>
+				</table>
+				<!-- END TABLE -->
+				
+					
+			</form>
+			
+
+{% else %}
+<p id="empty">Your shopping cart is empty. <a href="/collections/all">Continue shopping...</a></p>{% endif %}
+
+	<!-- END CONTENT -->
+		</div>
+		<!-- / PRIMARY -->
+		
+		

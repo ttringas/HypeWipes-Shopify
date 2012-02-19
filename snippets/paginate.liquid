@@ -1,0 +1,17 @@
+{% capture back_word %}{% if paginate=="comments" %}Older comments{%else%}Previous{%endif%}{%endcapture%}
+{% capture next_word %}{% if paginate=="comments" %}Newer comments{%else%}Next{%endif%}{%endcapture%}
+				<!-- START PAGINATE -->
+				<ul class="pagination clearfix">
+					{% if paginate.previous %}
+						<li><a href="{{ paginate.previous.url }}" class="prev">{{ back_word }}</a></li>
+					{% else %}
+						<li><span>{{ back_word }}</span></li>
+					{% endif %}
+						<li>Page {{ paginate.current_page }} of {{ paginate.pages }}</li>
+					{% if paginate.next %}
+						<li><a href="{{ paginate.next.url }}" class="next">{{ next_word }}</a></li>
+					{% else %}
+						<li><span>{{ next_word }}</span></li>
+					{% endif %}
+				</ul>
+				<!-- END PAGINATE -->

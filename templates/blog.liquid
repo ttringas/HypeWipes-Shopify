@@ -1,0 +1,76 @@
+		
+		<!-- PRIMARY -->
+		<div id="primary_column" class="{% if settings.side_blog == 'disabled' and settings.blog_tags == 'disabled' and settings.twitter_side == 'disabled' %} {%else%}col66 right{%endif%}">
+			<!-- START CONTENT -->
+			
+			{% paginate blog.articles by 10 %}
+			
+			{% if blog.articles.size > 0 %}
+				{% for article in blog.articles %}
+			
+				<!-- START ENTRY {{ forloop.index }} -->
+				<div class="entry{% if forloop.first %} start{% endif %}{% if forloop.last %} end{% endif %}">
+					<!-- START TITLE -->
+					<h2><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+				
+					<div class="title">
+						<p>
+							{% if settings.share_articles == 'enabled' %}{% include 'share' %}{% endif %}
+							Posted <a href="{{ article.url }}">{{ article.created_at | date: "%B %d, %Y" }}</a> 
+							{% if article.tags.size > 0 %}
+							<span class="blog_tags">in {% for tag in article.tags %}
+										<a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{tag}}</a>{%if forloop.rindex0 > 0%}, {%endif%}
+									 {%endfor%}</span>{%endif%}
+						</p>
+					</div>
+					<!-- END TITLE -->
+					<!-- START BODY -->
+					<div class="body">
+						{% if article.excerpt.size > 0 %}
+						  {{ article.excerpt }}
+						{% else %}
+						  {{ article.content }}
+						{% endif %}
+					</div>
+					{% if article.comments_count >= 0 %}
+					<p class="entry_comment_count">{{ article.comments_count }} <a href="{{ article.url }}#comments">Comments</a></p>
+					{%endif%}
+					
+					<!-- END BODY -->
+				</div>
+				<!-- END ENTRY {{ forloop.index }} -->{% endfor %}
+				
+			{% include "pagination" %}
+			
+			{% else %}
+			<div class="hgroup">
+				<h2>Sorry</h2>
+			</div>
+			<p>There are currently no blog posts to display.</p>
+			{% endif %}
+			{% endpaginate %}
+
+
+
+				
+			<!-- END CONTENT -->
+		</div>
+		<!-- / PRIMARY -->
+		
+		
+		<!-- ASIDE -->
+		<div id="home_side" class="col33 left">
+			{% if template != 'index' and settings.side_blog == 'enabled' %}
+				{% if settings.side_blog_excerpt == 'excerpt' %}
+					{% include "recent_posts" with "body" %}
+				{% else %}
+				{% include "recent_posts" %}
+				{% endif %}
+			{%endif%}	
+			
+			{% if settings.blog_tags == 'enabled' %}{% include "post_tags" %}{%endif%}
+			
+			{% if settings.twitter_side == 'enabled' %}{% include 'twitter' %}{%endif%}
+			
+		</div>
+		<!-- /  ASIDE -->

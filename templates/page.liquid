@@ -1,0 +1,34 @@
+
+		
+		<!-- PRIMARY -->
+		<div id="primary_column" class="{% if settings.side_blog == 'disabled' and settings.twitter_side == 'disabled' %} {%else%}col66 right{%endif%}">
+			<!-- START CONTENT -->
+			
+			<!-- START HEADING -->
+			<div class="hgroup">
+				<h2>{{ page.title | escape }}</h2>
+			</div>
+			<!-- END HEADING -->
+			
+			<div class="body">
+				{{ page.content }}
+			</div>
+		
+		</div>
+		<!-- / PRIMARY -->
+		
+		<!-- ASIDE -->
+		<div id="home_side" class="col33 left">
+			{% if template != 'index' and settings.side_blog == 'enabled' %}
+				{% if settings.side_blog_excerpt == 'excerpt' %}
+					{% include "recent_posts" with "body" %}
+				{% else %}
+				{% include "recent_posts" %}
+				{% endif %}
+			{%endif%}		
+			
+			
+			{% if settings.twitter_side == 'enabled' %}{% include 'twitter' %}{%endif%}
+			
+		</div>
+		<!-- /  ASIDE -->

@@ -1,0 +1,189 @@
+
+/* template styles */
+.action_bottom {
+	
+}
+
+.action_top { padding-top: 10px; text-align: center; }
+.action_edit a { padding: 0; }
+.action_delete a { padding: 0; }
+.action_delete { border-left: 1px solid #DDDDDD; padding-left: 6px; }
+.action_return a { display: inline-block; left: 0; position: absolute; }
+.address { padding-top: 20px; }
+.address_form { padding: 2px 0; width: 280px; }
+
+.address_title { padding-bottom: 5px; }
+.cancelled_order, .cancelled_order a { color: #BBBBBB; }
+.customer_address form { border: 1px solid #CCCCCC; display: block; padding: 10px; }
+.customer_address .view_address { padding-top: 15px; }
+.customer_address .view_address p { padding-bottom: 7px; }
+.default_address { font-style: italic; }
+.even { background-color: #F6F6F6; }
+.errors { color: #000000; margin: 0 0 20px; text-align: center; background-color: #FFEFEB; border: 1px solid #F96F96; }
+.errors li { list-style: none }
+.group { background-color: #FAFAFA; border: 1px solid #CCCCCC; padding: 10px; }
+.large_form { margin: 0 auto 20px auto; width: 790px; }
+.note { color: #777777; font-size: 12px; font-weight: normal; }
+.note_first { font-weight: bold; }
+.order_date { padding-bottom: 10px; text-align: left; }
+.order_section_title { padding-bottom: 15px; }
+.order_summary {
+
+}
+.order_summary .label {
+	padding: 10px 35px 10px 0;
+	text-align: right;
+	width: 100%;
+	}
+.order_summary td { border: none; }
+.order_total td {
+	font-weight: bold;
+}
+
+.order_side_status span {
+	margin-right: 6px;
+	margin-bottom: 4px;
+	padding-left: 14px;
+	padding-right: 13px;
+	float: left;
+}
+.status_paid, .status_authorized, .status_fulfilled {
+	background-color: #81ce26;
+} 
+.status_filed, .status_pending, .status_unfulfilled { 
+	background-color: #cccccc;
+} 
+.status_abandoned, .status_voided, .status_refunded, .status_restocked { background-color: #AF9C7E; color: #FFFFFF; }
+.total {
+}
+.value { text-align: left; }
+.value, .label { vertical-align: middle; }
+
+
+
+#add_address .label, #address_tables .label { font-size: 12px; text-align: right; padding-right: 35px; width: 100px; }
+#add_address td, #address_tables td { padding: 2px 0; }
+#add_address td, #address_tables td { border: none; }
+#address_pagination { padding-top: 20px; }
+#admin_header { padding-bottom: 40px; position: relative; }
+#admin_header .title { border-bottom: 1px solid #EEEEEE; font-weight: normal; padding-bottom: 15px; text-align: center; }
+#badtoken { width: 200px; }
+#customer, #recover-password { width: 310px; }
+#customer, #guest { display: inline-block; }
+#customer_detail .name { padding-bottom: 5px; }
+#customer_sidebar {
+	
+	
+}
+#customer_orders {
+	width: 650px;
+	float: left;
+}
+#customer_orders .date { width: 125px; }
+#forgot_password a { background-color: #F5F5F5; color: #AAAAAA; display: block; height: 34px; float: left; line-height: 34px; text-align: center; width: 203px;
+  border:1px solid #E8E8E8;
+  border-left:none;
+
+}
+#forgot_password a:hover { background-color: #F3F3F3; color: #777777; text-decoration: underline; }
+#guest { border-left: 1px solid #DDDDDD; margin-left: 25px; padding-left: 25px; width: 180px; }
+#login_password input[type="password"] {
+	width: 174px;
+}
+#logout { font-size: 11px; position: absolute; right: 0; top: 0; }
+#order_address { float: left; width: 200px; }
+#order_address p { line-height: 1.2em; text-align: left; }
+#order_cancelled { margin-bottom: 20px;
+  -moz-border-radius:     3px; 
+  -webkit-border-radius:  3px; 
+  border-radius:          3px; }
+#order_cancelled_title { padding-bottom; 0; }
+#order_details { width: 600px; }
+#order_details, #order_notes { float: left; margin: 10px 0 0 30px; }
+#order_details .money { white-space: nowrap; }
+
+#order_payment { border-bottom: 1px solid #DDDDDD; padding: 10px 0 15px; }
+#order_shipping { padding: 25px 0 10px; }
+#order_notes { width: 580px; }
+#tagline { font-weight: normal; }
+#tagline .subtitle { color: #888888; font-size: 14px; }
+#template { 
+	 }
+.template_header { padding-bottom: 17px; }
+.template_header .title { }
+#view_address { display: block; margin-top: 15px; }
+#wrapper { background-color: #FFFFFF; border: 1px solid #CCCCCC; margin: 10px auto 0; padding: 40px 30px;
+   -moz-box-shadow:    0px 2px 3px #BBBBBB;
+   -webkit-box-shadow: 0px 2px 3px #BBBBBB;
+   box-shadow:         0px 2px 3px #BBBBBB;
+}
+
+.address_table .gray_box {
+	padding: 30px;
+}
+.customer_address_table {
+	margin: 0 0 20px 0;
+}
+.login_form {
+	padding: 0 0 20px 0;
+}
+.login_form p {
+	margin-bottom: 22px;
+}
+.login_form label {
+	font-weight: bold;
+	display:block;
+	padding: 0 0 0 0;
+	margin: 0 0 18px 0;
+	font-size: 16px;
+}
+
+#recover-password {
+	display:none;
+}
+
+
+.order_table {
+	width: 100%;
+}
+.order_table .b_rect {
+	font-size: 16px;
+	padding: 10px 12px 7px 13px;
+}
+.order_table th {
+	text-align:left;
+	padding-bottom: 18px;
+}
+.order_table td {
+	padding: 18px 10px 18px 0;
+	border-top: 1px solid #dddddd
+}
+.order_table .no_border td {
+	border: none;
+}
+.order_number {
+	width: 160px;
+	padding-right: 10px;
+}
+td.order_number {
+	color: #999;	
+}
+.payment_status {
+	width: 154px;
+	padding-right: 10px;
+}
+.order_table tr td.total {
+}
+.order_table tr td.quantity,
+.order_table tr th.quantity {
+	text-align:center;
+	padding-right: 0;
+}
+.fulfillment_status {
+	width: 154px;
+	padding-right: 10px;
+}
+.order_table .b_rect {
+	display:block;
+	float: left;	
+}

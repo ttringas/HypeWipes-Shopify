@@ -1,0 +1,61 @@
+{% layout settings.customer_layout %}
+
+ 
+
+		<div class="hgroup">
+			
+			<h2><a href="{{ shop.url }}" class="header_link">Return to Store</a>Account Details and Order History</h2>	
+		</div>
+		
+		<div id="primary_column" class="col66 right">
+			
+			  {% if customer.orders.size != 0 %}
+			  <table class="order_table">
+			    <thead>
+			      <tr>
+			        <th class="order_number">Order</th>
+			        <th class="payment_status">Payment</th>
+			        <th class="fulfillment_status">Fulfillment</th>
+			        <th class="total">Total</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      {% for order in customer.orders %}
+			      <tr class="{% if order.cancelled %}cancelled_order{% endif %}">
+			        <td class="order_number">{{ order.name | link_to: order.customer_url }} - {{ order.created_at | date: "%b %d, %Y" }}</td>
+			        <td><span class="b_rect status_{{ order.financial_status }}">{{ order.financial_status }}</span></td>
+			        <td><span class="b_rect status_{{ order.fulfillment_status }}">{{ order.fulfillment_status }}</span></td>
+			        <td><span class="total money">{{ order.total_price | money }}</span></td>
+			      </tr>
+			      {% endfor %}
+			    </tbody>
+			  </table>
+			  {% else %}
+			    <p>You haven't placed any orders yet.</p>
+			  {% endif %}
+			
+		</div>
+
+
+		<div class="col33 left">
+
+			<div id="customer_sidebar" class="gray_box">
+			
+				<h3>Account Details</h3>
+				<h5>{{ customer.name }}</h5>
+				<p><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></p>
+				{% if customer.default_address != nil %}
+					<p>{{ customer.default_address.address1 }}<br/>
+						{% if customer.default_address.address2 != "" %}
+							{{ customer.default_address.address2 }}<br/>
+						{% endif %}
+						{{ customer.default_address.city}}, {% if address.province_code %}{{customer.default_address.province_code}}, {% endif %}{{customer.default_address.country}}<br/>
+						{{ customer.default_address.zip}}<br/>
+						{{ customer.default_address.phone }}
+					</p>
+				{% endif %}
+				<p><a href="/account/addresses">View Addresses ({{ customer.addresses_count }})</a></p>
+
+			</div>
+			
+		</div>

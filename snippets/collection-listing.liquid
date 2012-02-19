@@ -1,0 +1,36 @@
+
+		
+		<!-- PRIMARY -->
+		<div id="primary_column" class="">
+			<!-- START CONTENT -->
+			
+			<!-- START HEADING -->
+			<div class="hgroup">
+				<h2>Product Collections</h2>
+			</div>
+			<!-- END HEADING -->
+			
+			<div class="body">
+				<div class="search_results">
+				{% for collection in collections %}
+				  {% unless collection.handle == 'frontpage' %}
+					{% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+					<!-- START Result {{ forloop.index }} -->
+					<div class="result{%if forloop.last %} last{%endif%}">
+						<figure>
+							<img src="{{ collection.products.first.featured_image | product_img_url: "small" }}" alt="{{ collection_title }}" />
+						</figure>	
+						<h3><a href="{{ collection.url }}" title="Browse our {{ collection_title }} collection">{{ collection_title }}</a><small class="hint">
+				              {{ collection.all_products_count }} {{ collection.all_products_count | pluralize: 'item', 'items' }}</small></h3>
+						{% if collection.description.size > 0 %}<p>{{ collection.description }}</p>{%endif%}
+					</div>
+					<!-- END Result {{ forloop.index }} -->
+				  {% endunless %}
+				 {% endfor %}
+				</div>
+			</div>
+		
+		</div>
+		<!-- / PRIMARY -->
+		
+		

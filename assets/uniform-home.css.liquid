@@ -1,0 +1,152 @@
+/* Global Declaration */
+
+div.homeselector, 
+div.homeselector span {
+  background-image: url( '{{ "img-" | append: settings.base_color | append: "-select_sprite.png" | asset_url }}' );
+  background-repeat: no-repeat;
+}
+
+.homeselector, 
+.homeselector *, {
+	margin: 0;
+	padding: 0;
+}
+
+/* SPRITES */
+
+/* Select */
+
+div.homeselector {
+  background-position: -483px -205px;
+  line-height: 41px;
+	height: 41px;
+}
+
+div.homeselector span {
+  background-position: right 0px;
+  height: 41px;
+	line-height: 41px;
+}
+
+div.homeselector select {
+  /* change these to adjust positioning of select element */
+  top: 0px;
+	left: 0px;
+}
+
+div.homeselector:active, 
+div.homeselector.active {
+	background-position: -483px -246px;
+}
+
+div.homeselector:active span, 
+div.homeselector.active span {
+	background-position: right -41px;
+}
+
+div.homeselector.focus, div.homeselector.hover, div.homeselector:hover {
+	background-position: -483px -287px;
+}
+
+div.homeselector.focus span, div.homeselector.hover span, div.homeselector:hover span {
+	background-position: right -82px;
+}
+
+div.homeselector.focus:active,
+div.homeselector.focus.active,
+div.homeselector:hover:active,
+div.homeselector.active:hover {
+	background-position: -483px -328px;
+}
+
+div.homeselector.focus:active span,
+div.homeselector:hover:active span,
+div.homeselector.active:hover span,
+div.homeselector.focus.active span {
+	background-position: right -123px;
+}
+
+div.homeselector.disabled,
+div.homeselector.disabled:active,
+div.homeselector.disabled.active {
+	background-position: -483px -369px;
+}
+
+div.homeselector.disabled span,
+div.homeselector.disabled:active span,
+div.homeselector.disabled.active span {
+  background-position: right -164px;
+}
+
+
+
+/* PRESENTATION */
+
+/* Select */
+div.homeselector {
+  margin-bottom: 20px;
+  width: 190px;
+}
+
+div.homeselector select {
+  width: 190px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 1em;
+	border: solid 1px #fff;
+}
+
+div.homeselector span {
+  padding: 0px 25px 0px 2px;
+  cursor: pointer;
+}
+
+div.homeselector span {
+  width: 158px;
+}
+.light div.homeselector span {
+	color: #666;	
+  text-shadow: 0 1px 0 #fff;
+}
+.dark div.homeselector span{
+	color: #637479;	
+}
+
+div.homeselector.disabled span {
+	color: #bbb;
+}
+
+
+
+CORE FUNCTIONALITY 
+
+Not advised to edit stuff below this line
+-----------------------------------------------------
+*/
+
+.homeselector select:focus, .radio input:focus, .checker input:focus, uploader input:focus {
+  outline: 0;
+}
+
+/* Select */
+
+div.homeselector {
+	position: relative;
+	padding-left: 10px;
+	overflow: hidden;
+}
+
+div.homeselector span {
+	display: block;
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+div.homeselector select {
+	position: absolute;
+	opacity: 0;
+  height: 25px;
+  border: none;
+  background: none;
+}

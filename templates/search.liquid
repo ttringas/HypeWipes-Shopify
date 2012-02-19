@@ -1,0 +1,43 @@
+		<!-- PRIMARY -->
+		<div id="primary_column">
+			<!-- START CONTENT -->
+			
+			<div class="hgroup">
+				<h2>Search Results</h2>
+			</div>
+			
+			<p>For "{{ search.terms | escape | downcase }}"</p>
+			
+			{% paginate search.results by 9 %}
+			
+			{% if search.results.size > 0 %}
+			<!-- START PRODUCTS -->
+			<div class="search_results">{% for result in search.results %}
+				<!-- START Result {{ forloop.index }} -->
+				{% capture has_image %}{% if result.images.size >= 1 %}true{%else%}false{%endif%}{%endcapture%}
+				<div class="result{% if has_image == 'false' %} no_image{%endif%}{%if forloop.last %} last{%endif%}">
+					{% if has_image == "true" %}
+					<figure>
+						<img src="{{ result.images.first | product_img_url: "small" }}" alt="{{ result.title | escape }}" />
+					</figure>	
+					{%endif%}
+					<h3><a href="{{ result.url }}">{{ result.title }}</a></h3>
+					<p>{% if result.excerpt.size > 0 %}{{ result.excerpt }}{% else %}{{ result.content | strip_html | truncatewords:80 }}{%endif%}</p>
+					
+				</div>
+				<!-- END Result {{ forloop.index }} -->{% endfor %}
+			</div>
+			<!-- END PRODUCTS -->
+			
+			{% include "pagination" %}
+			
+			{% else %}
+			
+			<p id="empty">No results for your search.</p>{% endif %}{% endpaginate %}
+
+
+			<!-- END CONTENT -->
+		</div>
+		<!-- / PRIMARY -->
+		
+		

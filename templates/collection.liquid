@@ -1,0 +1,131 @@
+{% if collection.handle == 'all' %}
+
+{% for collection in collections %}
+
+{% unless collection.handle == 'frontpage' or collection.handle == 'all' %}
+{% if collection.products.size > 0 %}
+
+<!-- PRIMARY -->
+<div id="primary_column">
+    <!-- START CONTENT -->
+	
+	{% capture col_url%}{% if collection.url.size == 0 %}/collections/all{%else%}{{collection.url}}{%endif%}{%endcapture%}
+	{% if collection.all_tags.size > 0 %}
+	<div id="collection_tags">
+		<select name="collection_tags" id="collection_tags" class="loc_on_change uniform">
+			<option value="{{ col_url }}">All</option>
+			{% for tag in collection.all_tags %}
+				<option value="{{col_url}}/{{ tag | handle }}"{% if current_tags contains tag %} selected="selected"{%endif%}>{{ tag }}</option>
+			{% endfor %}
+		</select>
+		Browse in this collection: 
+	</div>
+	{% endif %}
+
+	<div class="hgroup">
+		<h2>{{ collection.title | escape }} <a class="view-all" href="{{ collection.url }}">View all {{ collection.title }}</a></h2>
+	</div>
+	
+	{% if collection.description.size > 0 %}<div id="collection_description" class="body">{{ collection.description }}</div>{% endif %}
+				
+	{% if collection.products.size > 0 %}
+	<!-- START PRODUCTS -->
+	<div id="products" class="large_products{%if settings.product_display_type == 'masonry' %} masonry{%endif%}{%if settings.product_display_type == 'fluid' %} fluid{%endif%}">
+		{% assign first_clear = '<div class="clearfix"><!--startin-->' %}
+		{% for product in collection.products limit: 3 %}
+			{% if settings.product_display_type != 'masonry' %}
+				{% cycle collection.handle: first_clear, '', '' %}
+				{% if forloop.index > 1 %}{%capture first_clear%}</div><div class="ie7break"></div><div class="clearfix">{%endcapture%}{%endif%}
+			{% endif %}
+            
+<div class="large_product {% cycle collection.handle: '', '', 'last_in_row' %}">
+    <a href="{{ product.url | within: collection }}" title="{{ product.title | escape }}">
+    	{% if product.tags contains "sale" or product.price < product.compare_at_price_max %}<p class="large_product_sale"></p>{%endif%}
+		<div class="large_product_image{%if settings.product_display_type == 'fixed' %} center_img{%endif%}">
+			{%if settings.product_display_type == 'fixed' %}
+				<img src="{{ product.images[0] | product_img_url: "large" }}" alt="{{ product.title | escape }}" />
+			{%else%}
+				<img src="{{ product.images[0] | product_img_url: "large" }}"  alt="{{ product.title | escape }}" />
+			{%endif%}
+		</div>
+		<div class="large_product_content clearfix">
+			<p class="large_product_price">{% if product.price_varies %}FROM {%endif%}{{ product.price | money }}</p>
+			<h4>{{ product.title }}</h4>
+			{% if settings.product_brand == 'enabled' %}{% if product.vendor %}<p>{{ product.vendor }}</p>{% endif %}{% endif %}
+		</div>
+	</a>
+</div>
+            
+		{% endfor %}
+		{% if settings.product_display_type != 'masonry' %}</div>{%endif%}
+	</div>
+	<!-- END PRODUCTS -->
+	{% else %}
+	<p id="empty">There are no products in this collection.</p>{% endif %}
+
+
+	<!-- END CONTENT -->
+	
+</div>
+<!-- / PRIMARY -->
+
+<br />
+<br />
+
+{% endif %}
+{% endunless %}
+
+{% endfor %}
+
+{% else %}
+
+{% paginate collection.products by settings.products_per_page %}
+<!-- PRIMARY -->
+<div id="primary_column">
+	<!-- START CONTENT -->
+	
+	{% capture col_url%}{% if collection.url.size == 0 %}/collections/all{%else%}{{collection.url}}{%endif%}{%endcapture%}
+	{% if collection.all_tags.size > 0 %}
+	<div id="collection_tags">
+		<select name="collection_tags" id="collection_tags" class="loc_on_change uniform">
+			<option value="{{ col_url }}">All</option>
+			{% for tag in collection.all_tags %}
+				<option value="{{col_url}}/{{ tag | handle }}"{% if current_tags contains tag %} selected="selected"{%endif%}>{{ tag }}</option>
+			{% endfor %}
+		</select>
+		Browse in this collection: 
+	</div>
+	{% endif %}
+
+	<div class="hgroup">
+		<h2>{{ collection.title | escape }}</h2>
+	</div>
+	
+	{% if collection.description.size > 0 %}<div id="collection_description" class="body">{{ collection.description }}</div>{% endif %}
+				
+	{% if collection.products.size > 0 %}
+	<!-- START PRODUCTS -->
+	<div id="products" class="large_products{%if settings.product_display_type == 'masonry' %} masonry{%endif%}{%if settings.product_display_type == 'fluid' %} fluid{%endif%}">
+		{% assign first_clear = '<div class="clearfix"><!--startin-->' %}
+		{% for product in collection.products %}
+			{% if settings.product_display_type != 'masonry' %}
+				{% cycle first_clear, '', '' %}
+				{% if forloop.index > 1 %}{%capture first_clear%}</div><div class="ie7break"></div><div class="clearfix">{%endcapture%}{%endif%}
+			{% endif %}
+			{% include 'large_product' with 3 %}
+		{% endfor %}
+		{% if settings.product_display_type != 'masonry' %}</div>{%endif%}
+	</div>
+	<!-- END PRODUCTS -->
+	{% include "pagination" %}
+	{% else %}
+	<p id="empty">There are no products in this collection.</p>{% endif %}
+
+
+	<!-- END CONTENT -->
+	
+</div>
+<!-- / PRIMARY -->
+{% endpaginate %}
+
+{% endif %}

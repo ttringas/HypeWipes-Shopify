@@ -1,0 +1,30 @@
+			<!-- START SORTABLE -->
+			<div id="sortable">
+				
+				{% if settings.shop_bycat == 'enabled' %}
+				<!-- START FILTER -->
+				<h3>Shop by Category</h3>
+				<select class="loc_on_change">
+					<option value="#">Select Category</option>{% for product_type in shop.types %}
+					<option value="{{ product_type | url_for_type }}">{{ product_type }}</option>
+					{% endfor %}
+				</select>
+				<!-- END FILTER -->
+				{%endif%}
+				
+				{% if settings.shop_bybrand == 'enabled' %}
+				<!-- START FILTER -->
+				<h3>Shop by Brand</h3>
+				<select class="loc_on_change">
+					<option value="#">Select Brand</option>{% for product_vendor in shop.vendors %}
+					<option value="{{ product_vendor | url_for_vendor }}">{{ product_vendor }}</option>
+					{% endfor %}
+				</select>
+				<!-- END FILTER -->
+				{%endif%}
+				
+				
+				
+			</div>
+			<!-- END SORTABLE -->
+			

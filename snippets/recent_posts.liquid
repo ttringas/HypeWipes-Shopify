@@ -1,0 +1,16 @@
+			<!-- RECENT BLOG POSTS -->
+			<div id="recent_blog_posts" class="gray_box">
+				{% capture blog_handle %}{%if template contains "blog" or template contains "article" %}{{ blog.handle }}{%else%}{{ settings.featured_blog }}{%endif%}{% endcapture %}
+				<h3 class="clearfix"><span><a href="{{ blogs[blog_handle].url }}">Recent Blog Posts</a></span><a href="{{ blogs[blog_handle].url }}.atom" class="rss_button">RSS</a></h3>
+				
+				
+				{% for article in blogs[blog_handle].articles limit:3 %}
+				<div class="post">
+					<h4><a href="{{ article.url }}">{{ article.title }}</a></h4>
+					<p class="post_date">Posted {{ article.published_at | date: "%B %d, %Y" }}</p>
+					{% if recent_posts == "body" %}<p>{% if article.excerpt.size > 0 %}{{ article.excerpt }}{% else %}{{ article.content | strip_html | truncatewords:40 }}{%endif%}</p>{%endif%}
+				</div>
+				{% endfor %}
+			
+			</div>
+			<!-- / RECENT BLOG POSTS -->

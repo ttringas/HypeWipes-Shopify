@@ -1,0 +1,124 @@
+
+		<!-- START HEADING -->
+		
+		{%  assign col = false %}
+		
+		{% if collection %}
+			{% assign col = collection.url %}
+		{% else %}		
+			{% for link in linklists.main-menu.links %}
+				{% if link.url == '/collections' or link.url == '/collections/all' %}
+					{% assign col = link.url %}
+				{% endif %}
+			{% endfor %}
+		{%endif%}
+		{% if col == false %}
+			{% assign col = '/collections/all' %}
+		{% endif %}
+		
+		<div class="hgroup">
+			<h2>{{ product.title | escape }}</h2>
+			{% if settings.product_brand == 'enabled' %}<h4>{{ product.vendor }}</h4>{% endif %}
+		</div>
+		
+		
+		<!-- END HEADING -->
+		
+		<!-- PRIMARY -->
+		<div id="primary_column" class="col66 left">
+			<!-- START CONTENT -->
+			
+			<div id="product-photos">
+				<!-- START IMAGE -->
+				<div id="image" class="clear">
+					<a href="{{ product.featured_image | product_img_url: 'original' }}" class="active fancy" id="product-img-0" title="{{ product.title | escape }}"><img src="{{ product.featured_image | product_img_url: 'grande' }}"  class="product-photo-grande" alt="{{ product.title | escape }}" /></a>
+				</div>
+				<script type="text/javascript">
+				var img_data = [
+				{% for image in product.images %}
+					{
+						{% if forloop.first %}
+							"loaded": true,
+						{% else %}
+							"loaded": false,
+						{% endif %}
+					 	"src":"{{ image | product_img_url: 'original' }}",
+						"height":0
+					}{% if forloop.rindex > 1 %},{% endif %}
+				{% endfor %}
+				];
+			</script>
+				<div id="thumbs" class="clearfix">
+					{% assign i_count = 0 %}
+					{% capture thumbs %}
+					<ul> 
+						{% for image in product.images %}
+							{% assign i_count = forloop.length %}
+							{% if forloop.first %}
+								<li class="active">
+							{% else %}
+								<li>
+							{% endif %}
+				    		<a href="{{ image | product_img_url: 'large' }}" class="fancybox" ><span></span><img  src="{{ image | product_img_url: 'small' }}" alt="{{ product.title | escape }}" /></a></li>
+				    	{% endfor %} 
+					</ul>
+					{% endcapture %}
+					{% if i_count > 1 %}
+						{{ thumbs }}
+					{% endif %}
+					
+				</div>
+				<!-- END IMAGE -->
+</div>
+
+
+			<!-- END CONTENT -->
+		</div>
+		<!-- / PRIMARY -->
+		
+		<!-- Product Side -->
+		
+		<div id="product_side" class="col33 right">
+			
+			<div class="price">
+				<p>
+					<span class="price_field">{{ product.price | money }}</span>{% if product.compare_at_price_max > product.price %}<del class="del_field">{{ product.compare_at_price_max | money }}</del>{% endif %}</p>
+				</p>
+			</div>
+			
+			<!-- START OPTIONS -->
+			<div id="options">
+				<form method="post" action="/cart/add" class="clear">{% if product.available %}{% if product.variants.size > 1 %}
+					<!-- START VARIANTS -->
+					<div id="variants">
+						<select name="id" id="id">{% for variant in product.variants %}{% if variant.available %}
+							<option value="{{ variant.id }}">{{ variant.title | escape }} ({{ variant.price | money }})</option>{% else %}
+							<option value="{{ variant.id }}" disabled="disabled">{{ variant.title | escape }} ({{ variant.price | money }}) - SOLD OUT</option>{% endif %}{% endfor %}
+						</select>
+					</div>
+					<!-- END VARIANTS -->{% else %}{% for variant in product.variants %}
+					<input type="hidden" name="id" value="{{ variant.id }}" />{% endfor %}{% endif %}
+					<!-- START BUY -->
+					<p id="buy">
+						<input type="submit" value="Add to Cart" id="add" class="b_rect" /> or <a href="{{ col }}" class="continue_browsing">continue browsing</a>
+					</p>
+					<!-- END BUY -->{% else %}
+					<p><strong>Sold Out</strong> <br /> <a href="{{ col }}" class="continue_browsing">Continue browsing</a></p>
+					{% endif %}
+				</form>
+			</div>
+			<!-- END OPTIONS -->
+			
+			<!-- START SUMMARY -->
+			<div id="description" class="body">
+				{{ product.description }}
+			</div>
+			<!-- END SUMMARY -->
+
+			{% if settings.share_products == 'enabled' %}<p class="text_share">{% include 'share' %}</p>{%endif%}
+			
+			
+		</div>
+		<!-- / Product Side -->
+		
+	

@@ -1,0 +1,69 @@
+		
+		<!-- PRIMARY -->
+		<div id="primary_column" class="col66 right">			
+			<!-- START CONTENT -->
+			{% if settings.intro == "" and settings.featured_products == "" %}
+  				<p>Go to your <a href="/admin/themes/{{ theme.id }}/settings">theme	settings</a> and look under the Homepage heading to add content here.</p>
+			{% endif %}
+{% if settings.intro.size > 0 %}
+<div id="home_content">
+		<h2>{{ pages[settings.intro].title }}</h2>
+		{{ pages[settings.intro].content }}
+</div>{%endif%}
+<!-- LARGE PRODUCTS -->	
+{% if collections[settings.featured_products].products.size > 0 %}
+<h2>{{ settings.featured_products_heading }}</h2>
+<div class="large_products">
+	<div class="clearfix">
+	{% for product in collections[settings.featured_products].products limit: 2 %}
+		{% include 'large_product' with 2 %}
+	{% endfor %}
+	</div>
+	{% if collections[settings.featured_products].products.size > 2 %}
+	<div class="clearfix">
+	{% for product in collections[settings.featured_products].products limit:2 offset:2 %}
+		{% include 'large_product' with 2 %}
+	{% endfor %}
+	</div>
+	{%endif%}
+	
+</div>
+{% endif %}
+<!-- / LARGE PRODUCTS -->
+
+
+{% if collections[settings.secondary_featured_products].products.size > 0 %}	
+	<h3>{{ collections[settings.secondary_featured_products].title }}</h3>
+	<div class="small_products clearfix">	
+		{% for product in collections[settings.secondary_featured_products].products limit: 4 %}
+			<a {% if forloop.last %}class="last"{%endif%}href="{{ product.url }}"><img src="{{ product.images[0] | product_img_url: "compact" }}" alt="" /></a>
+		{% endfor %}		
+	</div>
+{% endif %}
+
+
+{% if settings.display_recently_viewed == 'enabled' %}		
+{% include 'recently-viewed' %}
+{% endif %}
+				
+			<!-- END CONTENT -->
+		</div>
+		<!-- / PRIMARY -->
+		
+		<!-- ASIDE -->
+		<div id="home_side" class="col33 left">
+					
+			{% if settings.home_blog == 'enabled' %}
+				{% if settings.home_blog_excerpt == 'body' %}
+					{% include "recent_posts" with "body" %}
+				{% else %}
+					{% include "recent_posts" %}
+				{% endif %}
+			{%endif%}
+					
+			{% include "side_shopping" %}
+			
+			
+		</div>
+		<!-- /  ASIDE -->
+		

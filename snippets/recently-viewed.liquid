@@ -1,0 +1,37 @@
+<div id="recently-viewed-products" class="small_products clearfix" style="display:none">
+	<h3>Recently Viewed</h3>
+</div>
+
+
+<script id="recently-viewed-product-template"  type="text/x-jquery-tmpl">
+{% raw %}
+    	<a href="${url}" class="${isLastOne()}">
+      		<img src="${Shopify.resizeImage(featured_image, "compact")}" alt="" />
+    	</a>
+{% endraw %}
+</script>
+
+<script type="text/javascript" charset="utf-8">
+
+var recent_it = 0;
+function isLastOne()
+{
+	recent_it++;
+	
+	return (recent_it == 4) ? "last" : "";
+}
+//<![CDATA[
+
+// Including jQuery conditionnally.
+if (typeof jQuery === 'undefined') {
+  document.write({{ "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" | script_tag | json }});
+  document.write('<script type="text/javascript">jQuery.noConflict();<\/script>');
+}
+
+// Including api.jquery.js conditionnally.
+if (typeof Shopify.resizeImage === 'undefined') {
+  document.write({{ "api.jquery.js" | shopify_asset_url | script_tag | json }});
+}
+
+//]]>
+</script>

@@ -1,0 +1,117 @@
+
+		{% paginate article.comments by 25 %}		
+		<!-- PRIMARY -->
+		<div id="primary_column" class="{% if settings.side_blog == 'disabled' and settings.twitter_side == 'disabled' %} {%else%}col66 right{%endif%}">
+			<!-- START CONTENT -->
+			
+			<!-- START ENTRY -->
+			<div class="entry">
+				<!-- START TITLE -->
+				<h2><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+				<div class="title">
+					<p>
+						{% if settings.share_articles == 'enabled' %}{% include 'share' %}{% endif %}
+						Posted <a href="{{ article.url }}">{{ article.published_at | date: "%B %d, %Y" }}</a> 
+						{% if article.tags.size > 0 %}
+						<span class="blog_tags">in {% for tag in article.tags %}
+									<a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{tag}}</a>{%if forloop.rindex0 > 0%}, {%endif%}
+								 {%endfor%}</span>{%endif%}
+					</p>
+				</div>
+				<!-- END TITLE -->
+				<!-- START BODY -->
+				<div class="body">
+					  {{ article.content }}
+				</div>
+				<!-- END BODY -->
+			</div>
+			<!-- END ENTRY -->
+			
+			{% if blog.previous_article or blog.next_article %}
+				<ul class="pagination clearfix blog_pagination">
+					{% if blog.previous_article %}
+					<li>{{ '&laquo; previous post' | link_to: blog.previous_article }}</li>
+					{% endif %}
+					{% if blog.next_article %}
+					<li>{{ 'next post &raquo;' | link_to: blog.next_article }}</li>
+					{%endif%}
+				</ul>
+			{% endif %}
+			
+			{% assign new_comment = false %}
+			{% if blog.comments_enabled? %}
+			<!-- START COMMENTS -->
+			<div id="comments">
+				
+				<h3>Comments <span>({{ article.comments_count }} {{ article.comments_count | pluralize: "Comment", "Comments" }})</span></h3>
+				
+				
+				{% if comment and comment.created_at %}
+				{% assign new_comment = true %}
+				<div class="comment start">
+				  {{ comment.content }}
+				  <p class="comment_meta">Posted by {{ comment.author }} on {{ comment.created_at | date: "%B %d, %Y" }}</p>
+				</div>
+				{% endif %}
+				
+				{% if article.comments.size > 0 %}
+				
+				
+				
+				
+				{% for comment in article.comments %}
+				<!-- START COMMENT {{ forloop.index }} -->
+				<div class="comment{% if forloop.first %} start{% endif %}{% if forloop.last %} end{% endif %}">
+					{{ comment.content }}
+					<p class="comment_meta">Posted by {{ comment.author }} on {{ comment.created_at | date: "%B %d, %Y" }}</p>
+				</div>
+				<!-- END COMMENT {{ forloop.index }} -->{% endfor %}{% else %}
+				{% if new_comment == false %}
+				<p id="empty">There are no comments.</p>{% endif%}{% endif %}{% if blog.comments_enabled? %}
+				
+				{% include "pagination" with "comments" %}
+				<h5>Post Comment</h5>
+				<!-- START COMMENT FORM -->
+				{% form article %}{% if form.posted_successfully? %}{% if blog.moderated? %}
+					<p id="posted">Successfully posted and awaiting approval by moderator.</p>{% endif %}{% endif %}{% if form.errors %}
+					<p id="error">Not all the fields have been filled out correctly!</p>{% endif %}
+					
+					<p>
+						<label for="comment_author"{% if form.errors contains "author" %} class="error"{% endif %}>Name</label><br />
+						<input type="text" id="comment_author" name="comment[author]" value="{{ form.author }}" class="input field{% if form.errors contains "author" %} error{% endif %}" />
+					</p>
+					<p>
+						<label for="comment_email"{% if form.errors contains "email" %} class="error"{% endif %}>Email Address <span>(we never show this)</span></label><br/>
+						<input type="text" id="comment_email" name="comment[email]" value="{{ form.email }}" class="input field{% if form.errors contains "email" %} error{% endif %}" />
+					</p>
+					<p><label for="comment_body"{% if form.errors contains "body" %} class="error"{% endif %}>Comment</label><br/>
+						<textarea id="comment_body" name="comment[body]" cols="" rows="" class="input{% if form.errors contains "body" %} error{% endif %}">{{ form.body }}</textarea>
+					</p>
+					<p><input type="submit" value="Post Comment" class="b_rect" /></p>
+				{% endform %}
+				<!-- END COMMENT FORM -->{% endif %}
+			</div>
+			<!-- END COMMENTS -->{% endif %}{% if blog.comments_enabled? %}{% else %}
+			<p id="closed">Comments are closed for this article.</p>{% endif %}
+			
+			<!-- END CONTENT -->
+		</div>
+		<!-- / PRIMARY -->
+		
+		
+		<!-- ASIDE -->
+		<div id="home_side" class="col33 left">
+			{% if template != 'index' and settings.side_blog == 'enabled' %}
+				{% if settings.side_blog_excerpt == 'excerpt' %}
+					{% include "recent_posts" with "body" %}
+				{% else %}
+				{% include "recent_posts" %}
+				{% endif %}
+			{%endif%}		
+			
+			
+			{% if settings.twitter_side == 'enabled' %}{% include 'twitter' %}{%endif%}
+			
+		</div>
+		<!-- /  ASIDE -->
+		{% endpaginate %}

@@ -1,0 +1,45 @@
+			<!-- TWITTER -->
+			<div id="twitter" class="gray_box">
+				<h3 >On Twitter</h3>
+				<div id="twitter-w">
+					<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+					<script>
+					new TWTR.Widget({
+					  version: 2,
+					  type: 'profile',
+					  rpp: {{settings.twitter_count}},
+					  interval: 30000,
+					  width: 'auto',
+					  height: 'auto',
+					  theme: {
+					    shell: {
+					      background: '#ffffff',
+					      color: '#ffffff'
+					    },
+					    tweets: {
+					      background: '#ffffff',
+					      color: '#242424',
+					      links: '#a66b37'
+					    }
+					  },
+					  features: {
+					    scrollbar: false,
+					    loop: false,
+					    live: false,
+					    hashtags: true,
+					    timestamp: true,
+					    avatars: false,
+					    behavior: 'all'
+					  }
+					}).render().setUser('{{settings.twitter_handle}}').start();
+					</script>
+				</div><!-- #twitter-container -->
+				
+				{% if settings.twitter_follow == 'enabled' %}
+					<a href="http://twitter.com/{{settings.twitter_handle}}" target="_blank" class="b_rect">Follow @{{settings.twitter_handle}}</a>
+				{% endif %}
+			</div>
+			<!-- / TWITTER -->
+			
+			
+			

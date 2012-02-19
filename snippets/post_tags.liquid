@@ -1,0 +1,8 @@
+<!-- BLOG TAGS -->
+<h3>Post Tags</h3>
+<ul id="blog_tags" class="clearfix">
+	{% for tag in blog.all_tags %}
+		<li>{% if current_tags contains tag %}<a href="/blogs/{{ blog.handle }}" class="active">{{tag}}</a>{%else%}{{ tag | link_to_tag: tag }}{%endif%}</li>
+   {% endfor %}
+</ul>
+<!-- / BLOG TAGS -->
