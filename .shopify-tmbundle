@@ -10,12 +10,12 @@ use="default"
 
 ; my development shop
 [default]
-api_key="96c61d40656c3645edfba9ce7c432406"
-password="6f8eca2faa5dee440fe2bd2dbce5f67f"
-store="hypewipes.myshopify.com"
+api_key="d66f374ca10720512fe984a82ff03015"
+password="4914d30e3c9c7ebd997dbaa9da43a769"
+store="brown-glover-and-abernathy1549.myshopify.com"
 
 ; and the live shop
 ;[live]
-;api_key="96c61d40656c3645edfba9ce7c432406"
-;password="6f8eca2faa5dee440fe2bd2dbce5f67f"
-;store="hypewipes.myshopify.com"
+;api_key="d66f374ca10720512fe984a82ff03015"
+;password="4914d30e3c9c7ebd997dbaa9da43a769"
+;store="brown-glover-and-abernathy1549.myshopify.com"

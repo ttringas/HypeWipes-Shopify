@@ -30,6 +30,8 @@
     {{ "raphael-min.js"  | asset_url | script_tag }}
     {{ "jquery.maketextfit.js"  | asset_url | script_tag }}
     {{ "jquery.masonry.min.js"  | asset_url | script_tag }}
+    {{ "jquery.bxSlider.min.js"  | asset_url | script_tag }}
+    {{ "bx_styles.css" | asset_url | stylesheet_tag }}
 	
     {% if template contains 'customers' %}
     	{{ "shopify_common.js" | shopify_asset_url | script_tag }}
@@ -113,44 +115,47 @@
 	{% if template == "index" and settings.slideshow == 'enabled' %}
 	<!-- MARQUEE -->
 	<div id="marquee">
+	    <div class="slide">
+	      <iframe id="player_1" src="http://player.vimeo.com/video/7100569?api=1&amp;player_id=player_1" width="800" height="450" frameborder="0"></iframe>
+	    </div>
 		{% assign imgs = "" %}
-		{% assign contents = "" %}
-		{% assign first = "true" %}
-		{% for i in (1..5) %}
-			{%capture slide_display%}slide_{{i}}_display{%endcapture%}
-			{%capture slide_content%}slide_{{i}}_content{%endcapture%}
-			{%capture slide_title%}slide_{{i}}_title{%endcapture%}
-			{%capture slide_price%}slide_{{i}}_price{%endcapture%}
-			{%capture slide_desc%}slide_{{i}}_desc{%endcapture%}
-			{%capture slide_link%}slide_{{i}}_link{%endcapture%}
-			{% if settings[slide_display] == "enabled" %}
-				{% if settings[slide_link].size > 0 and settings[slide_content] == "disabled" %}
-					<a href="{{ settings[slide_link] }}" class="slide"{% if first != "true" %}style="display:none;"{%endif%}>
-				{% else %}
-					<div class="slide"{% if first != "true" %}style="display:none;"{%endif%}>					
-				{% endif %}
-				<img src="{{ 'slide_' | append: i | append:'.jpg' | asset_url }}" alt="{{ settings[slide_desc] | strip_html }}" />
-				{% if settings[slide_content] == "enabled" %}
-				<div class="slide_content" {% if i > 1 %}style="display:none;"{%endif%}>
-					<h2>{{ settings[slide_title] }}</h2>
-					<a href="{{ settings[slide_link] }}" class="slide_tag">
-						<p>Shipping Only</p>
-						<p class="slide_price">{{ settings[slide_price] }}</p>
-					</a>
-					<div class="svg_tag" id="tag_{{i}}"></div>
-					<p class="slide_desc">{{ settings[slide_desc] | truncatewords: 45 }}</p>
-				</div><!-- .slide-details-top -->
-				{%endif%}
-				{% if settings[slide_link].size > 0 and settings[slide_content] == "disabled" %}
-					</a>
-				{% else %}
-					</div>
-				{% endif %}
-				{% assign first = "false" %}
-			{% endif %}
-		{%endfor%}
-		
-		
+    {% assign contents = "" %}
+    {% assign first = "true" %}
+    {% for i in (1..5) %}
+    	{%capture slide_display%}slide_{{i}}_display{%endcapture%}
+    	{%capture slide_content%}slide_{{i}}_content{%endcapture%}
+    	{%capture slide_title%}slide_{{i}}_title{%endcapture%}
+    	{%capture slide_price%}slide_{{i}}_price{%endcapture%}
+    	{%capture slide_desc%}slide_{{i}}_desc{%endcapture%}
+    	{%capture slide_link%}slide_{{i}}_link{%endcapture%}
+    	{% if settings[slide_display] == "enabled" %}
+    		{% if settings[slide_link].size > 0 and settings[slide_content] == "disabled" %}
+    			<div class="slide">
+    			  <a href="{{ settings[slide_link] }}" class="slide">
+    		{% else %}
+    			<div class="slide">					
+    		{% endif %}
+    		<img src="{{ 'slide_' | append: i | append:'.jpg' | asset_url }}" alt="{{ settings[slide_desc] | strip_html }}" />
+    		{% if settings[slide_content] == "enabled" %}
+    		<div class="slide_content" {% if i > 1 %}style="display:none;"{%endif%}>
+    			<h2>{{ settings[slide_title] }}</h2>
+    			<a href="{{ settings[slide_link] }}" class="slide_tag">
+    				<p>Shipping Only</p>
+    				<p class="slide_price">{{ settings[slide_price] }}</p>
+    			</a>
+    			<div class="svg_tag" id="tag_{{i}}"></div>
+    			<p class="slide_desc">{{ settings[slide_desc] | truncatewords: 45 }}</p>
+    		</div><!-- .slide-details-top -->
+    		{%endif%}
+    		{% if settings[slide_link].size > 0 and settings[slide_content] == "disabled" %}
+    			</a>
+    			</div><!-- slide -->
+    		{% else %}
+    			</div><!-- slide -->
+    		{% endif %}
+    		{% assign first = "false" %}
+    	{% endif %}
+    {%endfor%}
 	</div>
 	<!-- / MARQUEE -->
 	{% endif %}
@@ -284,4 +289,62 @@
 
     {{ "script.js"  | asset_url | script_tag }}
 </body>
+<script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+        var slider = $("#marquee").bxSlider({
+      	  'auto': true,
+      	  'pause': 7000,
+      	  'autoControls':true,
+      	  'autoDelay':10000
+      	});  // bxSlider adds controls and callbacks replacing the custom slideShow functions below
+      	
+      	
+
+      	
+        // Listen for the ready event for any vimeo video players on the page
+        var player = $('#player_1')[0]; //get the player at the DOM level with [0];
+        $f(player).addEvent('ready', ready);
+
+        function addEvent(element, eventName, callback) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, callback, false);
+            }
+            else {
+                element.attachEvent(eventName, callback, false);
+            }
+        }
+
+        function ready(player_id) {
+            console.log('ready!');
+            var froogaloop = $f(player_id);
+
+            function onPlay() {
+                    froogaloop.addEvent('play', function(data) {
+                        $('.stop').click();
+                    });
+            }
+        
+            function onPause() {
+                    froogaloop.addEvent('pause', function(data) {
+                        $('.start').click();
+                    });
+            }
+
+
+            function onFinish() {
+                    froogaloop.addEvent('finish', function(data) {
+                        $('.start').click();
+                    });
+            }
+
+            onPlay();
+            onFinish();
+            onPause();
+        }
+});
+</script>
+
+
+
 </html>

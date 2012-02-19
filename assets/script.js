@@ -51,7 +51,10 @@ $(document).ready(function(){
 		});
 	});
 	
-	$("#marquee").slideshow();
+	
+	
+	
+	
 		
 	$("#marquee_price").makeTextFit({min_size:10, max_size:57});
 	// Masonry

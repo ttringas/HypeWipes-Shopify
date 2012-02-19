@@ -338,11 +338,11 @@ a:hover {
 #container {
   width: 960px;
   margin: 0 auto;
-  padding: 60px 30px 30px 30px;
+  padding: 20px 30px 30px 30px;
   background-color: {{ settings.container_bg_color }};
 }
 #header {
-  margin: 0 0 47px 0;
+  margin: 0 0 15px 0;
 }
 #header h1 {
   font-size: 48px;
@@ -515,16 +515,20 @@ body.catalog #nav .nav_catalog {
   margin: 7px 0 0 0;
   padding: 0;
 }
+
+.bx-wrapper {
+  margin:auto;
+}
 #marquee {
   position: relative;
-  margin: 45px 0 0 0;
-  width: 960px;
+  margin: 15px auto 0px;
+  width: 800px;
   overflow: hidden;
 }
 #marquee .slide {
   display: block;
   position: relative;
-  width: 960px;
+  width: 800px;
 }
 #marquee .slide img {
   display: block;
@@ -650,6 +654,9 @@ body.catalog #nav .nav_catalog {
   padding: 4px 0 0 0;
   margin: 0;
 }
+
+a.bx-start {float:left;}
+
 #main {
   padding: 44px 0 30px 0;
 }
@@ -1211,7 +1218,6 @@ a.b_rect:hover, input.b_rect:hover {
 .text_share .blog_share {
   position: relative;
   color: {{ settings.link_color }};
-  cursor: pointer;
 }
 .continue_browsing {
   font-size: 12px;
@@ -1443,14 +1449,10 @@ blockquote {
 .blog_share_icons {
   width: 164px;
   height: 46px;
-  display: none;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  position: absolute;
-  z-index: 10;
-  left: 50%;
-  margin: 6px 0 0 -82px;
+  display:block;
 }
 .blog_share_icons a {
   display: block;
@@ -1502,14 +1504,7 @@ blockquote {
 .blog_share_icons .blog_share_email:hover {
   background-position: -120px -46px;
 }
-.blog_share_icons span {
-  position: absolute;
-  display: block;
-  background: url("{{ 'blog_share_arrow.gif' | asset_url }}") 50% 0 no-repeat;
-  height: 10px;
-  width: 164px;
-  margin-top: -10px;
-}
+
 #blog_tags {
   list-style: none;
   padding: 0 0 0 0;
@@ -1756,6 +1751,38 @@ blockquote {
 #twitter .b_rect:hover {
   background-color: {{ settings.twitter_follow_hover }};
 }
+
+.contact-form ul{
+  margin: 0;
+  }
+.contact-form li{
+  list-style: none;
+  margin: 0 0 8px 0;
+  }
+
+.contact-form label{
+  display: block;
+  min-width: 90px;
+  float: left;
+  }
+.contact-form textarea{
+  width: 400px;
+  height: 100px;
+  }
+.contact-form .type-submit{
+  margin: 0 0 0 90px;
+  }
+
+.contact-form .error-msg{
+  float: none;
+  display: inline;
+  margin: 0 0 0 10px;
+  font-size: 11px;
+  padding: 6px;
+  }
+.contact-form .has-error input{
+  border: solid 1px #ef3a22;
+  }
 /* =============================================================================
    DARK VARIATION
    ========================================================================== */

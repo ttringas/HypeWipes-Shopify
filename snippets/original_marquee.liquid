@@ -1,0 +1,36 @@
+{% assign imgs = "" %}
+{% assign contents = "" %}
+{% assign first = "true" %}
+{% for i in (1..5) %}
+	{%capture slide_display%}slide_{{i}}_display{%endcapture%}
+	{%capture slide_content%}slide_{{i}}_content{%endcapture%}
+	{%capture slide_title%}slide_{{i}}_title{%endcapture%}
+	{%capture slide_price%}slide_{{i}}_price{%endcapture%}
+	{%capture slide_desc%}slide_{{i}}_desc{%endcapture%}
+	{%capture slide_link%}slide_{{i}}_link{%endcapture%}
+	{% if settings[slide_display] == "enabled" %}
+		{% if settings[slide_link].size > 0 and settings[slide_content] == "disabled" %}
+			<a href="{{ settings[slide_link] }}" class="slide"{% if first != "true" %}style="display:none;"{%endif%}>
+		{% else %}
+			<div class="slide"{% if first != "true" %}style="display:none;"{%endif%}>					
+		{% endif %}
+		<img src="{{ 'slide_' | append: i | append:'.jpg' | asset_url }}" alt="{{ settings[slide_desc] | strip_html }}" />
+		{% if settings[slide_content] == "enabled" %}
+		<div class="slide_content" {% if i > 1 %}style="display:none;"{%endif%}>
+			<h2>{{ settings[slide_title] }}</h2>
+			<a href="{{ settings[slide_link] }}" class="slide_tag">
+				<p>Shipping Only</p>
+				<p class="slide_price">{{ settings[slide_price] }}</p>
+			</a>
+			<div class="svg_tag" id="tag_{{i}}"></div>
+			<p class="slide_desc">{{ settings[slide_desc] | truncatewords: 45 }}</p>
+		</div><!-- .slide-details-top -->
+		{%endif%}
+		{% if settings[slide_link].size > 0 and settings[slide_content] == "disabled" %}
+			</a>
+		{% else %}
+			</div>
+		{% endif %}
+		{% assign first = "false" %}
+	{% endif %}
+{%endfor%}
